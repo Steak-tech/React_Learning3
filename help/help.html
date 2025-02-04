@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aide</title>
+    <style>
+        li {
+            margin-bottom: 1em;
+        }
+
+        a {
+            background-color: lightsteelblue;
+            color: black;
+        }
+
+        li li {
+            margin-bottom: initial;
+        }
+    </style>
+</head>
+<body>
+<hr>
+<h3>
+    Aide à l'utilisation de l'API
+</h3>
+<hr>
+<hr>
+<h4>
+    La gestion du serveur de données
+</h4>
+<ul>
+    <li> <code>npm start</code> : Lancement du serveur</li>
+    <li> <code>npm run resetDB</code> : Remise à zéro de la base de données mais pas des <i>pictures</i> des auteurs</li>
+    <li> <code>npm run resetImg</code> : Remise à zéro des <i>pictures</i> mais pas de la base de données</li>
+    <li> <code>npm run resetAll</code> : Remise à zéro de la base de données et des <i>pictures</i> </li>
+</ul>
+<hr>
+<h4>
+    L'aide en ligne
+</h4>
+
+<ul>
+    <li><a href="http://localhost:8000">GET http://localhost:8000/</a> : Affichage de cette aide</li>
+    <li><a href="http://localhost:8000/help">GET http://localhost:8000/help</a> : Affichage de cette aide</li>
+    </li>
+    <li><a href="http://localhost:8000/test">GET http://localhost:8000/test</a> : Affiche un message qui assure que le serveur fonctionne </li>
+    <li><a href="http://localhost:8000/users">GET http://localhost:8000/protected/users</a> : Liste des users
+        enregistrés dans la base de données. Initialement, seul l'utilisateur toto est enregistré. Son mot de passe est
+        123. Cette URL n'est utile que lorsqu'on développe une application en mode protégé.
+    </li>
+</ul>
+
+<hr>
+<h4>Les auteurs</h4>
+
+<ul>
+    <li><a href="http://localhost:8000/img/holmes.jpeg">GET http://localhost:8000/img/X</a> : Affichage du fichier X
+        (une image représentant un auteur)
+    <li><a href="http://localhost:8000/authors">GET http://localhost:8000/authors</a> : La liste des auteurs</li>
+    <li><a href="http://localhost:8000/authors/1">GET http://localhost:8000/authors/x</a> : L'auteur dont l'id est <code>x</code>
+    </li>
+    <li><a href="http://localhost:8000/authors/5/quotes">GET http://localhost:8000/authors/x/quotes</a> : La liste des
+        citations de l'auteur dont l'id est <code>x</code>
+    </li>
+    <li><a href="http://localhost:8000/help">POST http://localhost:8000/authors</a> : Envoi d'un formulaire contenant
+        un nouvel auteur
+        Les données doivent être transmises dans un objet <i>FormData</i> :
+        <ul>
+            <li> firstname : chaîne de caractère représentant le prénom</li>
+            <li> lastname : chaîne de caractère repésentant le nom</li>
+            <li> picture : le fichier image (type png, jpeg, ...) associé à la personne</li>
+        </ul>
+        Cette requête retourne un statut 201 si l'opération s'est bien passée, et un statut 500 sinon
+    </li>
+    <li><a href="http://localhost:8000/help">DELETE http://localhost:8000/authors/X</a> : Suppression de l'auteur dont
+        l'id est <code>x</code> <br>
+        Cette requête retourne un statut 204 si l'opération s'est bien passée, un 500 en cas d'échec et un code 202 si
+        la requête a été traitée mais sans garantie de résultat.
+    </li>
+    <li><a href="http://localhost:8000/help">PUT http://localhost:8000/authors/X</a> : Modification de l'auteur dont
+        l'id est <code>x</code> par l'envoi d'un formulaire avec les nouvelles données <br>
+        Cette requête retourne un statut 204 si l'opération s'est bien passée, et un code 500 en cas d'échec.
+    </li>
+</ul>
+
+<hr>
+<h4>Les citations avec simplement l'id de leur auteur</h4>
+
+<ul>
+    <li><a href="http://localhost:8000/quotes">GET http://localhost:8000/quotes</a> : La liste des citations</li>
+    <li><a href="http://localhost:8000/help">POST http://localhost:8000/quotes</a> : Envoi d'un formulaire contenant une
+        nouvelle citation
+        Les données doivent être transmises dans un objet <i>FormData</i> :
+        <ul>
+            <li> text : Chaîne de caractère contenant la citation elle même</li>
+            <li> id : L'id de l'auteur</li>
+        </ul>
+        Cette requête retourne un statut 201 si l'opération s'est bien passée, et un statut 500 sinon
+    </li>
+    <li><a href="http://localhost:8000/help">DELETE http://localhost:8000/quotes/X</a> : Suppression de la citation dont
+        l'id est <code>x</code> <br>
+        Cette requête retourne un statut 204 si l'opération s'est bien passée, un 500 en cas d'échec et un code 202 si
+        la requête a été traitée mais sans garantie de résultat.
+    </li>
+</ul>
+
+<hr>
+<h4> Authentification </h4>
+<p>Les routes présentées précédemment existent également en mode protégé, il est alors nécessaire de s'être connecté pour pouvoir y accéder.
+    Pour qu'une des URL précédentes passe en mode protégé, elle doit être précédée du mot-clé <code>protected</code>, ce qui donne : <code>http://localhost:8000/protected/...</code>
+</p>
+<p> Pour s'authentifier ou créer un compte, il faut utiliser les routes suivantes, qui ne nécessitent pas d'être authentifié :</p>
+<ul>
+    <li><a href="http://localhost:8000/help">POST http://localhost:8000/protected/signup</a> : Envoi d'un formulaire de
+        création de compte. Les données à transmettre sont :
+        <ul>
+            <li> name : le nom de l'utilisateur à créer. Il doit être unique</li>
+            <li> password : le mot de passe associé</li>
+        </ul>
+        Cette route retourne :
+        <ul>
+            <li> En cas de succès, l'id de l'utilisateur qui vient d'être créé.</li>
+            <li> En cas d'erreur : un code d'erreur <code>401</code> ou <code>403</code> + un message associé</li>
+        </ul>
+    </li>
+
+    <li><a href="http://localhost:8000/help">POST http://localhost:8000/protected/signin</a> : Envoi d'un formulaire de
+        connexion. Les données à transmettre sont :
+        <ul>
+            <li> name : le nom de l'utilisateur</li>
+            <li> password : le mot de passe associé</li>
+        </ul>
+        Cette route retourne :
+        <ul>
+            <li> En cas de succès, un token valable une heure et qui doit être utilisé pour toute requête protégée.</li>
+            <li> En cas d'erreur : un code d'erreur <code>401</code> + un message associé</li>
+        </ul>
+    </li>
+</ul>
+</body>
+</html>

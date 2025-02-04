@@ -1,0 +1,28 @@
+{
+  "name": "td05-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "resetAll": "npm run resetDB && npm run resetImg",
+    "resetImg": "rm img/* && cp -n -R img-save/ img",
+    "resetDB": "sqlite3 -init data/quotes.sql data/quotes.db .quit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.3",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "sqlite3": "^5.1.4",
+    "uuid": "^9.0.1"
+  }
+}
